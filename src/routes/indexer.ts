@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get(
   "/indexer",
-  asyncHandler(async (req: Request, res: Response, next) => {
+  asyncHandler(async (req: Request, res: Response) => {
     res.send({ status: "ok" });
   })
 );

@@ -15,6 +15,9 @@
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "keywords": [],
   "author": "topether21",
   "license": "ISC",
