@@ -26,7 +26,11 @@ yarn dev
 http://localhost:4002/status
 ```
 
-References
+#Tools
+
+[Convert Javascript Object to JSON](https://www.convertsimple.com/convert-javascript-to-json/)
+
+#References
 
 [Optimizing Node API Development with SWC Compiler and ESLint](https://dev.to/franciscomendes10866/how-to-setup-a-node-api-with-swc-and-eslint-1h5d)
 

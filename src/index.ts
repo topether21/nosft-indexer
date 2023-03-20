@@ -1,40 +1,50 @@
-import express from "express";
-import cors from "cors";
-import listEndpoints from "express-list-endpoints";
-import routes from "~/routes";
+import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
 import { config } from "~/config";
-const app = express();
-const port = config.port;
+import app from "~/app";
 
-type demo = {
-  a: string;
+const server: FastifyInstance = Fastify({});
+
+const opts: RouteShorthandOptions = {
+  schema: {
+    response: {
+      200: {
+        type: "object",
+        properties: {
+          pong: {
+            type: "string",
+          },
+        },
+      },
+    },
+  },
 };
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
-app.get("/status", (req, res) =>
-  res.send({
-    v: "0.0.1",
-    last_feature: "",
-  })
-);
-
-app.get("/", (req, res) => {
-  console.log(listEndpoints(app));
-  res.send({
-    api: listEndpoints(app),
-  });
+server.get("/ping", opts, async () => {
+  return { pong: "it worked!" };
 });
 
-app.use(routes);
+const start = async () => {
+  try {
+    const server = await app({
+      logger: {
+        transport: {
+          target: "@fastify/one-line-logger",
+        },
+      },
+    });
 
-app.listen(port, () => {
-  console.log(`Auth listening on port ${port}`);
-  console.log(listEndpoints(app));
-});
+    await server.listen({
+      host: config.hostname,
+      port: config.port,
+    });
+
+    const address = server.server.address();
+    const port = typeof address === "string" ? address : address?.port;
+    console.log(`Server listening on ${port}`);
+  } catch (err) {
+    console.log(`[Error]: ${err}`);
+    server.log.error(err);
+    process.exit(1);
+  }
+};
+start();
