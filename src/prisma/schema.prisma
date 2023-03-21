@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  address      String         @id
+  created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime       @default(now()) @db.Timestamptz(6)
+  inscriptions inscriptions[]
+}
+
+model inscriptions {
+  address                    String
+  txid                       String
+  version                    Int      @default(0)
+  size                       Int      @default(0)
+  weight                     Int      @default(0)
+  fee                        Int      @default(0)
+  status_confirmed           Boolean  @default(false)
+  status_block_height        Int      @default(0)
+  status_block_hash          String
+  inscriptionId              String
+  collection_creator_address String?
+  collection_name            String?
+  collection_slug            String?
+  content_type               String?
+  escrow                     String?
+  id                         String
+  meta                       Json?    @default(dbgenerated("jsonb_build_object()"))
+  num                        Int?     @default(0)
+  value                      Int?     @default(0)
+  index                      Int      @id @unique @default(autoincrement())
+  accounts                   accounts @relation(fields: [address], references: [address], onUpdate: Restrict)
+}

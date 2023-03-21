@@ -5,6 +5,7 @@ const router = express.Router();
 router.get(
   "/indexer",
   asyncHandler(async (req: Request, res: Response) => {
+    const { address, offset, limit } = req.query as any; // TODO: fix type
     res.send({ status: "ok" });
   })
 );

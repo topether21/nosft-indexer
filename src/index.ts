@@ -4,6 +4,7 @@ import listEndpoints from "express-list-endpoints";
 import routes from "~/routes";
 import { config } from "~/config";
 const app = express();
+import "~/workers";
 const port = config.port;
 
 app.use(express.json());
